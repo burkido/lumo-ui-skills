@@ -1,0 +1,21 @@
+{
+  "name": "lumo-ui",
+  "description": "Jetpack Compose UI component skill for lumo-ui — a Gradle plugin that generates production-ready Compose components (Button, TextField, ModalBottomSheet, NavigationBar, TopBar, and 19 more) into Android or KMP projects. Actions: setup plugin, generate components, configure theming, add components via CLI, customize generated code. Platforms: Android, Kotlin Multiplatform.",
+  "version": "1.0.0",
+  "author": {
+    "name": "burkido"
+  },
+  "license": "MIT",
+  "keywords": [
+    "android",
+    "jetpack-compose",
+    "kotlin",
+    "kmp",
+    "kotlin-multiplatform",
+    "ui-components",
+    "gradle-plugin",
+    "material-design",
+    "compose"
+  ],
+  "skills": ["./.claude/skills/lumo-ui"]
+}

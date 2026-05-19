@@ -1,5 +1,20 @@
 {
-  "name": "lumo-ui-skills",
-  "description": "Claude Code skill for lumo-ui — a Gradle plugin that generates Jetpack Compose UI components into your Android or KMP project.",
-  "version": "1.0.0"
+  "name": "lumo-ui",
+  "description": "Jetpack Compose UI components for Android and Kotlin Multiplatform. Covers all 24 lumo-ui components, Gradle plugin setup, theming, and KMP configuration.",
+  "version": "1.0.0",
+  "author": {
+    "name": "burkido"
+  },
+  "license": "MIT",
+  "keywords": [
+    "android",
+    "jetpack-compose",
+    "kotlin",
+    "kmp",
+    "kotlin-multiplatform",
+    "ui-components",
+    "gradle-plugin",
+    "compose"
+  ],
+  "skills": ["./.claude/skills/lumo-ui"]
 }

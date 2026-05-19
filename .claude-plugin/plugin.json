@@ -1,0 +1,5 @@
+{
+  "name": "lumo-ui-skills",
+  "description": "Claude Code skill for lumo-ui — a Gradle plugin that generates Jetpack Compose UI components into your Android or KMP project.",
+  "version": "1.0.0"
+}

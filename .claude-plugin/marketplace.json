@@ -1,0 +1,12 @@
+{
+  "name": "lumo-ui-skills",
+  "owner": {
+    "name": "burkido"
+  },
+  "plugins": [
+    {
+      "name": "lumo-ui-skills",
+      "source": "./"
+    }
+  ]
+}

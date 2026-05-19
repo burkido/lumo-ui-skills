@@ -41,25 +41,44 @@ Claude activates this skill automatically when you ask about:
 
 ## Installing the skill
 
-### Method 1 — Claude Code plugin marketplace (recommended)
+### Method 1 — npx installer (recommended)
 
-Run these two commands inside Claude Code:
+```bash
+npx lumo-ui-skill
+```
+
+Installs the skill into `.claude/skills/lumo-ui/` in your current project. Claude Code picks it up automatically.
+
+**Options:**
+
+```bash
+npx lumo-ui-skill install --agent cursor    # install for Cursor
+npx lumo-ui-skill install --agent windsurf  # install for Windsurf
+npx lumo-ui-skill install --dir /my/project # install to a specific directory
+npx lumo-ui-skill install --force           # overwrite existing installation
+npx lumo-ui-skill uninstall                 # remove the skill
+```
+
+### Method 2 — skills CLI
+
+```bash
+npx skills add burkido/lumo-ui-skills
+```
+
+### Method 3 — Claude Code plugin marketplace
+
+Run inside Claude Code:
 
 ```
 /plugin marketplace add burkido/lumo-ui-skills
 /plugin install lumo-ui-skills@lumo-ui-skills
 ```
 
-Claude will automatically activate the skill whenever you ask about lumo-ui.
-
-### Method 2 — Manual clone
-
-Use this if you prefer a local copy you can inspect or edit.
+### Method 4 — Manual clone
 
 **Single project** (skill applies only to this project):
 
 ```bash
-# From your project root
 git clone https://github.com/burkido/lumo-ui-skills .claude/skills/lumo-ui
 ```
 
@@ -173,6 +192,19 @@ KotlinMultiplatform=false
 ```
 lumo-ui-skills/
 ├── SKILL.md                        ← skill definition (routing logic)
+├── skill.json                      ← skills ecosystem metadata
+├── .claude-plugin/
+│   ├── plugin.json                 ← Claude Code plugin manifest
+│   └── marketplace.json            ← Claude Code marketplace listing
+├── .claude/skills/lumo-ui/         ← installable skill package
+│   ├── SKILL.md
+│   ├── components/
+│   └── knowledge/
+├── .github/workflows/
+│   ├── create-release.yml          ← bundles zip + creates GitHub release
+│   └── claude.yml                  ← @claude mention support in issues/PRs
+├── cli/                            ← npx lumo-ui-skill installer
+│   └── src/index.ts
 ├── components/                     ← one file per component (API, variants, examples)
 │   ├── button.md
 │   ├── text-field.md

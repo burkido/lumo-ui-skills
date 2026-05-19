@@ -17,5 +17,5 @@
     "material-design",
     "compose"
   ],
-  "skills": ["./.claude/skills/lumo-ui"]
+  "skills": ["."]
 }

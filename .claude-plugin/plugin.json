@@ -16,5 +16,5 @@
     "gradle-plugin",
     "compose"
   ],
-  "skills": ["./.claude/skills/lumo-ui"]
+  "skills": ["."]
 }

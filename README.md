@@ -191,15 +191,11 @@ KotlinMultiplatform=false
 
 ```
 lumo-ui-skills/
-├── SKILL.md                        ← skill definition (routing logic)
+├── SKILL.md                        ← skill entry point (routing logic)
 ├── skill.json                      ← skills ecosystem metadata
 ├── .claude-plugin/
 │   ├── plugin.json                 ← Claude Code plugin manifest
 │   └── marketplace.json            ← Claude Code marketplace listing
-├── .claude/skills/lumo-ui/         ← installable skill package
-│   ├── SKILL.md
-│   ├── components/
-│   └── knowledge/
 ├── .github/workflows/
 │   ├── create-release.yml          ← bundles zip + creates GitHub release
 │   └── claude.yml                  ← @claude mention support in issues/PRs

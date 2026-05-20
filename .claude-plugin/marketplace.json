@@ -1,35 +1,14 @@
 {
-  "name": "lumo-ui-skill",
-  "id": "lumo-ui-skill",
+  "name": "lumo-ui-skills",
   "owner": {
     "name": "burkido"
   },
-  "metadata": {
-    "description": "Jetpack Compose UI component skill for lumo-ui — 24 components, Gradle plugin setup, theming, and KMP support",
-    "version": "1.0.0"
-  },
   "plugins": [
     {
-      "name": "lumo-ui",
-      "source": "./",
-      "description": "AI skill for lumo-ui, a Gradle plugin that generates Jetpack Compose UI components into Android and KMP projects. Includes all 24 components (Button, TextField, ModalBottomSheet, NavigationBar, TopBar, Accordion, AlertDialog, Badge, Card, Checkbox, Chip, Divider, Icon, IconButton, OTPTextField, ProgressIndicator, RadioButton, Scaffold, Slider, Snackbar, Surface, Switch, Text, Tooltip), theming with AppTheme/Colors/Typography, and Kotlin Multiplatform setup.",
-      "version": "1.0.0",
-      "author": {
-        "name": "burkido"
-      },
-      "keywords": [
-        "android",
-        "jetpack-compose",
-        "kotlin",
-        "kmp",
-        "kotlin-multiplatform",
-        "ui-components",
-        "gradle-plugin",
-        "compose",
-        "material-design"
-      ],
-      "category": "mobile",
-      "strict": false
+      "name": "lumo-ui-skills",
+      "source": "./plugins/lumo-ui-skills",
+      "description": "AI agent skills for lumo-ui Jetpack Compose UI components.",
+      "version": "1.0.0"
     }
   ]
 }

@@ -1,0 +1,17 @@
+{
+  "name": "lumo-ui-skills",
+  "version": "1.0.0",
+  "description": "AI agent skills for lumo-ui — Jetpack Compose UI components for Android and Kotlin Multiplatform.",
+  "author": {
+    "name": "burkido"
+  },
+  "repository": "https://github.com/burkido/lumo-ui-skills",
+  "license": "MIT",
+  "keywords": [
+    "android",
+    "jetpack-compose",
+    "kotlin",
+    "kmp",
+    "compose"
+  ]
+}

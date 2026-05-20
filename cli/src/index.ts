@@ -12,7 +12,7 @@ const __dirname = dirname(__filename);
 
 const GITHUB_REPO = 'burkido/lumo-ui-skills';
 const SKILL_DIR_NAME = 'lumo-ui';
-const SKILL_FILES = ['SKILL.md', 'components', 'knowledge'];
+const SKILL_BASE = 'skills/lumo-ui/';
 
 type Agent = 'claude' | 'cursor' | 'windsurf' | 'all';
 type SingleAgent = Exclude<Agent, 'all'>;
@@ -42,12 +42,13 @@ function extractSkillFiles(zipData: Uint8Array, targetDir: string) {
   for (const [filePath, data] of Object.entries(files)) {
     // Strip the top-level archive folder (e.g. lumo-ui-skills-main/)
     const relativePath = filePath.replace(/^[^/]+\//, '');
-    if (!relativePath) continue;
+    if (!relativePath.startsWith(SKILL_BASE)) continue;
 
-    const topLevel = relativePath.split('/')[0];
-    if (!SKILL_FILES.includes(topLevel)) continue;
+    // Strip skills/lumo-ui/ prefix to get the path relative to the skill root
+    const skillRelPath = relativePath.slice(SKILL_BASE.length);
+    if (!skillRelPath) continue;
 
-    const destPath = join(targetDir, relativePath);
+    const destPath = join(targetDir, skillRelPath);
 
     if (filePath.endsWith('/')) {
       mkdirSync(destPath, { recursive: true });
@@ -88,7 +89,7 @@ async function installSkill(options: { agent: Agent; dir: string; force: boolean
       mkdirSync(t.skillBaseDir, { recursive: true });
     }
 
-    const bundledSkillDir = join(__dirname, '../../.claude/skills/lumo-ui');
+    const bundledSkillDir = join(__dirname, '../../skills/lumo-ui');
 
     if (existsSync(bundledSkillDir)) {
       spinner.text = 'Copying skill files...';

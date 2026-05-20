@@ -1,220 +1,94 @@
-# lumo-ui Claude Code Skill
+# AI agent skills for lumo-ui
 
-A [Claude Code skill](https://docs.anthropic.com/en/docs/claude-code/skills) that gives Claude deep knowledge of **lumo-ui** — a Gradle plugin that generates Jetpack Compose UI components directly into your Android or Kotlin Multiplatform project.
+A collection of AI agent skills for [lumo-ui](https://github.com/nomanr/lumo-ui) — a Gradle plugin that generates Jetpack Compose UI components directly into Android and Kotlin Multiplatform projects. Skills follow the [Agent Skills](https://agentskills.io) standard.
 
-**Official site:** https://www.lumoui.com  
-**GitHub:** https://github.com/nomanr/lumo-ui
+**Official docs:** https://www.lumoui.com
 
----
+## How do skills work?
 
-## What is lumo-ui?
+Skills are self-contained folders that package instructions and resources for an AI agent to use on a specific task. Each folder includes a `SKILL.md` file with YAML frontmatter (name and description) followed by the guidance your coding agent follows while the skill is active.
 
-lumo-ui is a **Gradle plugin**, not a runtime library. It copies ready-to-use Kotlin source files into your project. You own every generated file and can edit it freely. The plugin is only needed at development time — nothing extra ships in your APK.
+### Skill naming conventions
 
----
+All skills in this repository follow the naming convention: `lumo-<category>-<functional-name>`.
 
-## What this skill covers
+`<category>` is one of the predefined categories listed in [CATEGORIES](./CATEGORIES):
+- `components` — skills for specific lumo-ui Compose components
 
-When this skill is active, Claude can help you with:
+`<functional-name>` should be a short, descriptive name using kebab-case.
 
-- **Plugin setup** — applying the plugin, running `--init`, configuring `lumo.properties`
-- **Theme generation** — `--setup` command, `AppTheme`, `Colors`, `Typography` usage
-- **Component generation** — `--add <Component>` for any of the 24 components
-- **Component APIs** — parameters, variants, usage examples for every component
-- **Kotlin Multiplatform (KMP)** — platform-split file structure, KMP-specific configuration
-- **Customization** — editing generated files directly (no re-run needed)
+## Installation
 
----
-
-## Skill activation
-
-Claude activates this skill automatically when you ask about:
-
-- Setting up or configuring the lumo-ui plugin
-- Running `./gradlew lumo` commands
-- Generating or customizing Compose components
-- `lumo.properties` configuration
-- `AppTheme`, `Colors`, or `Typography` from a lumo-ui setup
-- Any of the 24 lumo-ui components by name
-
----
-
-## Installing the skill
-
-### Method 1 — npx installer (recommended)
-
-```bash
-npx lumo-ui-skill
-```
-
-Installs the skill into `.claude/skills/lumo-ui/` in your current project. Claude Code picks it up automatically.
-
-**Options:**
-
-```bash
-npx lumo-ui-skill install --agent cursor    # install for Cursor
-npx lumo-ui-skill install --agent windsurf  # install for Windsurf
-npx lumo-ui-skill install --dir /my/project # install to a specific directory
-npx lumo-ui-skill install --force           # overwrite existing installation
-npx lumo-ui-skill uninstall                 # remove the skill
-```
-
-### Method 2 — skills CLI
+### Using the skills CLI
 
 ```bash
 npx skills add burkido/lumo-ui-skills
 ```
 
-### Method 3 — Claude Code plugin marketplace
-
-Run inside Claude Code:
-
-```
-/plugin marketplace add burkido/lumo-ui-skills
-/plugin install lumo-ui-skills@lumo-ui-skills
-```
-
-### Method 4 — Manual clone
-
-**Single project** (skill applies only to this project):
+### Claude Code
 
 ```bash
-git clone https://github.com/burkido/lumo-ui-skills .claude/skills/lumo-ui
+claude plugin marketplace add burkido/lumo-ui-skills
 ```
-
-**All projects** (global install):
 
 ```bash
-git clone https://github.com/burkido/lumo-ui-skills ~/.claude/skills/lumo-ui
+claude plugin install lumo-ui-skills@burkido
 ```
 
-Claude Code discovers skills automatically from `.claude/skills/` — no further config needed.
-
-**To update later:**
+### npx installer
 
 ```bash
-cd .claude/skills/lumo-ui   # or ~/.claude/skills/lumo-ui for global
-git pull
+npx lumo-ui-skill
 ```
 
----
+Installs the skill into `.claude/skills/lumo-ui/` in your current project. Supports Claude Code, Cursor, and Windsurf:
+
+```bash
+npx lumo-ui-skill --agent cursor    # Cursor
+npx lumo-ui-skill --agent windsurf  # Windsurf
+npx lumo-ui-skill --agent all       # all three
+npx lumo-ui-skill uninstall         # remove
+```
+
+### Manual installation
+
+Copy the desired skill folder into the skills directory of your agent:
+
+```bash
+cp -r skills/lumo-ui .claude/skills/
+```
+
+## Repository layout
+
+| Path | Contents |
+|------|----------|
+| [skills/](./skills) | All skill folders, one per skill |
+| [plugins/](./plugins) | Installable plugin packages |
+| [cli/](./cli) | `npx lumo-ui-skill` installer |
 
 ## lumo-ui quick start
 
-### 1. Apply the plugin
-
-```kotlin
-// root build.gradle.kts
-plugins {
-    id("com.nomanr.plugin.lumo") version "LATEST"
-}
-```
-
-Latest version: https://search.maven.org/artifact/com.nomanr/lumo
-
-### 2. Initialize
+lumo-ui is a **Gradle plugin**, not a runtime library — it copies ready-to-use Kotlin source into your project.
 
 ```bash
+# 1. Apply the plugin in root build.gradle.kts
+# id("com.nomanr.plugin.lumo") version "LATEST"
+
+# 2. Initialize
 ./gradlew lumo --init
-```
 
-### 3. Configure `lumo.properties`
+# 3. Configure lumo.properties (generated by --init)
 
-```properties
-ThemeName=AppTheme
-ComponentsDir=ui-components/src/main/java/com/example/ui
-PackageName=com.example.ui
-KotlinMultiplatform=false
-```
-
-### 4. Generate theme files
-
-```bash
+# 4. Generate theme files
 ./gradlew lumo --setup
-```
 
-### 5. Add components
-
-```bash
+# 5. Add components
 ./gradlew lumo --add Button
 ./gradlew lumo --add TextField
-./gradlew lumo --add NavigationBar
-# ... any of the 24 components
 ```
 
----
+Latest plugin version: https://search.maven.org/artifact/com.nomanr/lumo
 
-## CLI reference
+## Contributing
 
-| Command | Purpose |
-|---------|---------|
-| `./gradlew lumo --plugin-help` | Show all available commands |
-| `./gradlew lumo --init` | Initialize project, generate `lumo.properties` |
-| `./gradlew lumo --setup` | Generate theme files |
-| `./gradlew lumo --add <Component>` | Generate a component |
-| `./gradlew lumo --required-deps` | Print required `build.gradle.kts` dependencies |
-
----
-
-## 24 available components
-
-| Component | CLI command |
-|-----------|-------------|
-| Accordion | `--add Accordion` |
-| Alert Dialog | `--add AlertDialog` |
-| Badge | `--add Badge` |
-| Button | `--add Button` |
-| Card | `--add Card` |
-| Checkbox | `--add Checkbox` |
-| Chip | `--add Chip` |
-| Divider | `--add Divider` |
-| Icon | `--add Icon` |
-| Icon Button | `--add IconButton` |
-| Modal Bottom Sheet | `--add ModalBottomSheet` |
-| Navigation Bar | `--add NavigationBar` |
-| OTP Text Field | `--add OTPTextField` |
-| Progress Indicators | `--add ProgressIndicator` |
-| Radio Button | `--add RadioButton` |
-| Scaffold | `--add Scaffold` |
-| Slider | `--add Slider` |
-| Snackbar | `--add Snackbar` |
-| Surface | `--add Surface` |
-| Switch | `--add Switch` |
-| Text | `--add Text` |
-| Text Field | `--add TextField` |
-| Tooltip | `--add Tooltip` |
-| Top Bar | `--add TopBar` |
-
----
-
-## Skill structure
-
-```
-lumo-ui-skills/
-├── SKILL.md                        ← skill entry point (routing logic)
-├── skill.json                      ← skills ecosystem metadata
-├── .claude-plugin/
-│   ├── plugin.json                 ← Claude Code plugin manifest
-│   └── marketplace.json            ← Claude Code marketplace listing
-├── .github/workflows/
-│   ├── create-release.yml          ← bundles zip + creates GitHub release
-│   └── claude.yml                  ← @claude mention support in issues/PRs
-├── cli/                            ← npx lumo-ui-skill installer
-│   └── src/index.ts
-├── components/                     ← one file per component (API, variants, examples)
-│   ├── button.md
-│   ├── text-field.md
-│   └── ...
-└── knowledge/                      ← shared knowledge files
-    ├── plugin-setup.md             ← full plugin setup walkthrough
-    ├── theming.md                  ← AppTheme, Colors, Typography usage
-    └── platform-kmp.md             ← Kotlin Multiplatform specifics
-```
-
----
-
-## More resources
-
-- Docs: https://www.lumoui.com
-- Each component has its own docs page at `https://www.lumoui.com/<component-slug>`  
-  e.g. https://www.lumoui.com/button, https://www.lumoui.com/modal-bottomsheet
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for details on adding new skills.

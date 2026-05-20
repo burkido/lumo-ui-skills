@@ -10,7 +10,10 @@ description: >
   NavigationBar, ModalBottomSheet, TopBar, Accordion, AlertDialog, Badge, Card, Checkbox,
   Chip, Divider, Icon, IconButton, OTPTextField, ProgressIndicator, RadioButton, Slider,
   Snackbar, Surface, Switch, Text, Tooltip).
-version: 1.0.0
+license: MIT
+metadata:
+  author: burkido
+  version: "1.0.0"
 ---
 
 # lumo-ui Skill

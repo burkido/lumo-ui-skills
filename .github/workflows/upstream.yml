@@ -1,0 +1,66 @@
+name: Upstream drift
+
+# lumo-ui is maintained elsewhere, so check weekly that the skill still matches its
+# latest release and that the official docs links still resolve.
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+
+      - name: Check for drift
+        id: check
+        run: |
+          pinned=$(sed -n 's/^  lumo-version: "\(.*\)"/\1/p' skills/lumo-ui/SKILL.md)
+          latest=$(curl -fsSL https://repo1.maven.org/maven2/com/nomanr/lumo/maven-metadata.xml | sed -n 's:.*<release>\(.*\)</release>.*:\1:p')
+          report="$RUNNER_TEMP/report.md"
+          : > "$report"
+
+          if [ "$latest" != "$pinned" ]; then
+            echo "- lumo-ui $latest is out; the skill documents $pinned." >> "$report"
+          fi
+
+          git clone --quiet --depth 1 --branch "v$latest" https://github.com/nomanr/lumo-ui.git "$RUNNER_TEMP/lumo-ui"
+          if ! node scripts/check-upstream.mjs "$RUNNER_TEMP/lumo-ui" 2> "$RUNNER_TEMP/api.txt"; then
+            echo "- Docs reference APIs that lumo-ui $latest doesn't generate:" >> "$report"
+            sed 's/^✖ /  - /' "$RUNNER_TEMP/api.txt" >> "$report"
+          fi
+
+          for url in $(grep -rhoE 'https://www\.lumoui\.com/[a-z0-9-]*' skills | sort -u); do
+            status=$(curl -s -o /dev/null -w '%{http_code}' -L "$url")
+            [ "$status" = 200 ] || echo "- $url returns $status" >> "$report"
+          done
+
+          cat "$report"
+          echo "drift=$([ -s "$report" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "report=$report" >> "$GITHUB_OUTPUT"
+
+      # One open issue collects the findings; later runs comment on it instead of opening more.
+      - name: Report drift
+        if: steps.check.outputs.drift == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPORT: ${{ steps.check.outputs.report }}
+        run: |
+          title="Skill is out of date with lumo-ui"
+          issue=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "\"$title\" in:title" --json number --jq '.[0].number')
+          if [ -n "$issue" ]; then
+            gh issue comment "$issue" --repo "$GITHUB_REPOSITORY" --body-file "$REPORT"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --body-file "$REPORT"
+          fi

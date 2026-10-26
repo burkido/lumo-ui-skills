@@ -1,0 +1,13 @@
+{
+  "name": "lumo-ui-skills",
+  "owner": {
+    "name": "burkido"
+  },
+  "plugins": [
+    {
+      "name": "lumo-ui-skills",
+      "source": "./",
+      "description": "Set up lumo-ui, generate and customize its 24 Compose components, and theme them with AppTheme."
+    }
+  ]
+}

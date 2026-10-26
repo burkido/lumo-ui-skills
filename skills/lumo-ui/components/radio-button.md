@@ -17,7 +17,7 @@ with a label via the `content` slot, or in a managed radio group.
 | `enabled` | `Boolean` | Enable/disable (default `true`) |
 | `colors` | `RadioButtonColors` | Via `RadioButtonDefaults.colors()` |
 | `modifier` | `Modifier` | Standard |
-| `content` | `@Composable (RowScope.() -> Unit)?` | Label / content next to the radio dot |
+| `content` | `@Composable (() -> Unit)?` | Label / content next to the radio dot |
 
 ## Example
 
@@ -95,7 +95,7 @@ fun RadioButtonSample() {
 
 ## Sample App Snippet (Multiplatform)
 
-> Same usage pattern as Android. Uses `com.nomanr.lumo.multiplatform.ui.components.*` imports.
+> Same usage pattern as Android. Uses `<PackageName>.components.*` imports.
 
 ## Note on grouping
 

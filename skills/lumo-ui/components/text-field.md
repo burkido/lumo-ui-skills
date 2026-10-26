@@ -1,7 +1,7 @@
 # Text Field
 
 **CLI**: `./gradlew lumo --add TextField`  
-**Docs**: https://www.lumoui.com/text-field
+**Docs**: https://www.lumoui.com/textfield
 
 ## Description
 
@@ -152,4 +152,4 @@ fun TextFieldSample() {
 
 ## Sample App Snippet (Multiplatform)
 
-> Same usage pattern as Android. Uses `com.nomanr.lumo.multiplatform.ui.components.textfield.*` imports.
+> Same usage pattern as Android. Uses `<PackageName>.components.textfield.*` imports.

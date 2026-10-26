@@ -1,0 +1,39 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate skills and manifests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+
+      - name: Validate skills and version sync
+        run: node scripts/validate.mjs
+
+      - name: Validate Claude Code marketplace and plugin
+        run: npx --yes @anthropic-ai/claude-code@2.1.310 plugin validate --strict .
+
+      # Checks docs against the lumo-ui release named in SKILL.md's metadata.lumo-version.
+      - name: Check skill against lumo-ui templates
+        run: |
+          version=$(sed -n 's/^  lumo-version: "\(.*\)"/\1/p' skills/lumo-ui/SKILL.md)
+          git clone --quiet --depth 1 --branch "v$version" https://github.com/nomanr/lumo-ui.git "$RUNNER_TEMP/lumo-ui"
+          node scripts/check-upstream.mjs "$RUNNER_TEMP/lumo-ui"

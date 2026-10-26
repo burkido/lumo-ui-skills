@@ -28,7 +28,7 @@ shape, and optional click/toggle/selection semantics. Most other components
 | `contentColor` | `Color` | Default content color for children |
 | `shadowElevation` | `Dp` | Drop shadow depth |
 | `border` | `BorderStroke?` | Outline stroke |
-| `content` | `@Composable BoxScope.() -> Unit` | Surface body |
+| `content` | `@Composable () -> Unit` | Surface body (not a `BoxScope`; add a `Box` for alignment) |
 
 ## Additional parameters for clickable overload
 
@@ -115,4 +115,4 @@ fun SurfaceSample() {
 
 ## Sample App Snippet (Multiplatform)
 
-> Same usage pattern as Android. Uses `com.nomanr.lumo.multiplatform.ui.components.*` imports.
+> Same usage pattern as Android. Uses `<PackageName>.components.*` imports.

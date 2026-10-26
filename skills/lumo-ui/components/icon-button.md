@@ -14,15 +14,15 @@ Same 13 `IconButtonVariant` values mirroring `ButtonVariant`:
 
 | Variant | Style |
 |---------|-------|
-| `IconButtonVariant.PrimaryFilled` | Filled, primary |
+| `IconButtonVariant.Primary` | Filled, primary |
 | `IconButtonVariant.PrimaryOutlined` | Outlined, primary |
 | `IconButtonVariant.PrimaryElevated` | Elevated, primary |
 | `IconButtonVariant.PrimaryGhost` | Ghost, primary |
-| `IconButtonVariant.SecondaryFilled` | Filled, secondary |
+| `IconButtonVariant.Secondary` | Filled, secondary |
 | `IconButtonVariant.SecondaryOutlined` | Outlined, secondary |
 | `IconButtonVariant.SecondaryElevated` | Elevated, secondary |
 | `IconButtonVariant.SecondaryGhost` | Ghost, secondary |
-| `IconButtonVariant.DestructiveFilled` | Filled, destructive |
+| `IconButtonVariant.Destructive` | Filled, destructive |
 | `IconButtonVariant.DestructiveOutlined` | Outlined, destructive |
 | `IconButtonVariant.DestructiveElevated` | Elevated, destructive |
 | `IconButtonVariant.DestructiveGhost` | Ghost, destructive |
@@ -33,7 +33,7 @@ Same 13 `IconButtonVariant` values mirroring `ButtonVariant`:
 | Parameter | Type | Purpose |
 |-----------|------|---------|
 | `onClick` | `() -> Unit` | Click handler |
-| `variant` | `IconButtonVariant` | Visual style (default: `PrimaryFilled`) |
+| `variant` | `IconButtonVariant` | Visual style (default: `Primary`) |
 | `enabled` | `Boolean` | Enable/disable (default `true`) |
 | `shape` | `Shape` | Button shape (default: rounded square) |
 | `modifier` | `Modifier` | Standard |
@@ -45,7 +45,7 @@ Same 13 `IconButtonVariant` values mirroring `ButtonVariant`:
 IconButton(
     shape = IconButtonDefaults.ButtonCircleShape,
     onClick = {},
-    variant = IconButtonVariant.PrimaryFilled
+    variant = IconButtonVariant.Primary
 ) {
     Icon(Icons.Default.Add, contentDescription = "Add")
 }
@@ -65,7 +65,7 @@ IconButton(
 // FAB-style circle button
 IconButton(
     shape = IconButtonDefaults.ButtonCircleShape,
-    variant = IconButtonVariant.PrimaryFilled,
+    variant = IconButtonVariant.Primary,
     modifier = Modifier.size(56.dp),
     onClick = { /* create new */ }
 ) {
@@ -118,4 +118,4 @@ Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spa
 
 ## Sample App Snippet (Multiplatform)
 
-> Same usage pattern as Android. Uses `com.nomanr.lumo.multiplatform.ui.components.*` imports.
+> Same usage pattern as Android. Uses `<PackageName>.components.*` imports.

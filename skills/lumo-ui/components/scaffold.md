@@ -31,7 +31,7 @@ val scope = rememberCoroutineScope()
 
 Scaffold(
     topBar = {
-        TopBar(title = { Text("My Screen") })
+        TopBar { Text(text = "My Screen", style = AppTheme.typography.h3) }
     },
     bottomBar = {
         NavigationBar { /* items */ }
@@ -112,7 +112,7 @@ fun ScaffoldSample() {
 
 ## Sample App Snippet (Multiplatform)
 
-> Same usage pattern as Android. Uses `com.nomanr.lumo.multiplatform.ui.components.*` imports.
+> Same usage pattern as Android. Uses `<PackageName>.components.*` imports.
 
 ## Important: always use padding
 

@@ -21,7 +21,7 @@ Use for grouping related content visually.
 | Parameter | Type | Purpose |
 |-----------|------|---------|
 | `modifier` | `Modifier` | Standard |
-| `onClick` | `(() -> Unit)?` | Makes card clickable; omit for static card |
+| `onClick` | `() -> Unit` | Clickable overload only; use the overload without it for a static card |
 | `enabled` | `Boolean` | When `onClick` is set, enables/disables (default `true`) |
 | `shape` | `Shape` | Corner shape (default `RoundedCornerShape(12.dp)`) |
 | `colors` | `CardColors` | Container/content colors via `CardDefaults.cardColors()` |
@@ -121,4 +121,4 @@ fun CardSample() {
 
 ## Sample App Snippet (Multiplatform)
 
-> Same usage pattern as Android. Uses `com.nomanr.lumo.multiplatform.ui.components.card.*` imports.
+> Same usage pattern as Android. Uses `<PackageName>.components.card.*` imports.

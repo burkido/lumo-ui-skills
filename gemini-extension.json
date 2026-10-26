@@ -1,0 +1,5 @@
+{
+  "name": "lumo-ui-skills",
+  "version": "1.0.0",
+  "description": "Set up lumo-ui, generate and customize its 24 Jetpack Compose components, and theme them with AppTheme on Android and Kotlin Multiplatform."
+}

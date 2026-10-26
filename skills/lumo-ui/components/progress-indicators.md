@@ -1,7 +1,7 @@
 # Progress Indicators
 
-**CLI**: `./gradlew lumo --add ProgressIndicator`  
-**Docs**: https://www.lumoui.com/progress-indicator
+**CLI**: `./gradlew lumo --add ProgressIndicators`  
+**Docs**: https://www.lumoui.com/progress-indicators
 
 ## Description
 
@@ -12,16 +12,16 @@ progress) and indeterminate (unknown duration) modes.
 
 | Variant | Mode | How |
 |---------|------|-----|
-| `LinearProgressIndicator` | Determinate | Pass `progress: () -> Float` |
+| `LinearProgressIndicator` | Determinate | Pass `progress: Float` |
 | `LinearProgressIndicator` | Indeterminate | Omit `progress` parameter |
-| `CircularProgressIndicator` | Determinate | Pass `progress: () -> Float` |
+| `CircularProgressIndicator` | Determinate | Pass `progress: Float` |
 | `CircularProgressIndicator` | Indeterminate | Omit `progress` parameter |
 
 ## Parameters — LinearProgressIndicator (determinate)
 
 | Parameter | Type | Purpose |
 |-----------|------|---------|
-| `progress` | `() -> Float` | Value 0f–1f |
+| `progress` | `Float` | Value 0f–1f |
 | `modifier` | `Modifier` | Use `fillMaxWidth()` for full-width |
 | `color` | `Color` | Track fill color |
 | `trackColor` | `Color` | Background track color |
@@ -35,7 +35,7 @@ Same as determinate but without `progress`.
 
 | Parameter | Type | Purpose |
 |-----------|------|---------|
-| `progress` | `() -> Float` | Determinate: 0f–1f. Omit for indeterminate |
+| `progress` | `Float` | Determinate: 0f–1f. Omit for indeterminate |
 | `modifier` | `Modifier` | Use `Modifier.size()` to resize |
 | `color` | `Color` | Arc color |
 | `trackColor` | `Color` | Background ring color |
@@ -55,7 +55,7 @@ CircularProgressIndicator(
 var progress by remember { mutableFloatStateOf(0f) }
 
 LinearProgressIndicator(
-    progress = { progress },
+    progress = progress,
     modifier = Modifier.fillMaxWidth()
 )
 
@@ -83,7 +83,7 @@ fun ProgressIndicatorSample() {
         // Linear progress indicators
         Text("Linear", style = AppTheme.typography.h4)
         LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-        LinearProgressIndicator(progress = { animatedProgress }, modifier = Modifier.fillMaxWidth())
+        LinearProgressIndicator(progress = animatedProgress, modifier = Modifier.fillMaxWidth())
         Text("${(animatedProgress * 100).toInt()}%", style = AppTheme.typography.body2)
 
         // Circular progress indicators
@@ -92,7 +92,7 @@ fun ProgressIndicatorSample() {
             CircularProgressIndicator()
             CircularProgressIndicator(modifier = Modifier.size(48.dp))
             Box(contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(progress = { animatedProgress }, modifier = Modifier.size(64.dp))
+                CircularProgressIndicator(progress = animatedProgress, modifier = Modifier.size(64.dp))
                 Text("${(animatedProgress * 100).toInt()}%", style = AppTheme.typography.label2)
             }
         }
@@ -114,7 +114,7 @@ fun ProgressIndicatorSample() {
                 Column(modifier = Modifier.weight(1f)) {
                     Text("video.mp4", style = AppTheme.typography.label1)
                     Spacer(Modifier.height(4.dp))
-                    LinearProgressIndicator(progress = { animatedProgress }, modifier = Modifier.fillMaxWidth())
+                    LinearProgressIndicator(progress = animatedProgress, modifier = Modifier.fillMaxWidth())
                 }
             }
         }
@@ -124,4 +124,4 @@ fun ProgressIndicatorSample() {
 
 ## Sample App Snippet (Multiplatform)
 
-> Same usage pattern as Android. Uses `com.nomanr.lumo.multiplatform.ui.components.*` imports.
+> Same usage pattern as Android. Uses `<PackageName>.components.*` imports.

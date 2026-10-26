@@ -13,15 +13,15 @@ Supports loading state and custom content slots.
 
 | Variant enum | Style |
 |-------------|-------|
-| `ButtonVariant.PrimaryFilled` | Filled, primary color (default) |
+| `ButtonVariant.Primary` | Filled, primary color (default) |
 | `ButtonVariant.PrimaryOutlined` | Outlined, primary color |
 | `ButtonVariant.PrimaryElevated` | Elevated/shadow, primary color |
 | `ButtonVariant.PrimaryGhost` | No border/fill, primary color |
-| `ButtonVariant.SecondaryFilled` | Filled, secondary color |
+| `ButtonVariant.Secondary` | Filled, secondary color |
 | `ButtonVariant.SecondaryOutlined` | Outlined, secondary color |
 | `ButtonVariant.SecondaryElevated` | Elevated, secondary color |
 | `ButtonVariant.SecondaryGhost` | No border/fill, secondary color |
-| `ButtonVariant.DestructiveFilled` | Filled, error/red color |
+| `ButtonVariant.Destructive` | Filled, error/red color |
 | `ButtonVariant.DestructiveOutlined` | Outlined, error/red color |
 | `ButtonVariant.DestructiveElevated` | Elevated, error/red color |
 | `ButtonVariant.DestructiveGhost` | No border/fill, error/red color |
@@ -33,11 +33,11 @@ Supports loading state and custom content slots.
 |-----------|------|---------|
 | `onClick` | `() -> Unit` | Click handler |
 | `text` | `String?` | Button label (use `text` OR `content`, not both) |
-| `variant` | `ButtonVariant` | Visual style (default: `PrimaryFilled`) |
+| `variant` | `ButtonVariant` | Visual style (default: `Primary`) |
 | `enabled` | `Boolean` | Enable/disable (default `true`) |
 | `loading` | `Boolean` | Shows spinner, disables click (default `false`) |
 | `modifier` | `Modifier` | Standard |
-| `content` | `@Composable (RowScope.() -> Unit)?` | Custom content slot |
+| `content` | `(@Composable () -> Unit)?` | Custom content slot |
 
 ## Example
 
@@ -63,7 +63,7 @@ Button(
 
 // Custom content (icon + text)
 Button(
-    variant = ButtonVariant.SecondaryFilled,
+    variant = ButtonVariant.Secondary,
     onClick = { /* share */ }
 ) {
     Icon(Icons.Default.Share, contentDescription = null)
@@ -128,4 +128,4 @@ fun ButtonRealWorldExamples() {
 
 ## Sample App Snippet (Multiplatform)
 
-> Same usage pattern as Android. Uses `com.nomanr.lumo.multiplatform.ui.components.*` imports.
+> Same usage pattern as Android. Uses `<PackageName>.components.*` imports.

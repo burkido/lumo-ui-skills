@@ -26,12 +26,12 @@ var isVisible by remember { mutableStateOf(false) }
 | `sheetState` | `SheetState` | From `rememberModalBottomSheetState()` |
 | `sheetGesturesEnabled` | `Boolean` | Allow drag-to-dismiss (default `true`) |
 | `dragHandle` | `@Composable (() -> Unit)?` | Custom drag handle; use `null` to hide |
-| `shape` | `Shape` | Sheet top corner shape |
-| `containerColor` | `Color` | Sheet background |
-| `scrimColor` | `Color` | Background scrim overlay color |
-| `windowInsets` | `WindowInsets` | Insets for edge-to-edge |
 | `modifier` | `Modifier` | Standard |
 | `content` | `@Composable ColumnScope.() -> Unit` | Sheet body |
+
+Shape (16dp top corners), container color (`AppTheme.colors.background`) and scrim
+(`AppTheme.colors.scrim`) are fixed inside the generated `ModalBottomSheet.kt`. Edit that
+file to change them.
 
 ## Example
 
@@ -123,7 +123,7 @@ fun ModalBottomSheetSample() {
 
 ## Sample App Snippet (Multiplatform)
 
-> Same usage pattern as Android. Uses `com.nomanr.lumo.multiplatform.ui.components.*` imports.
+> Same usage pattern as Android. Uses `<PackageName>.components.*` imports.
 
 ## Note on dismiss animation
 

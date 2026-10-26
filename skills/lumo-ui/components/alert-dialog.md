@@ -21,12 +21,16 @@ Modal dialog for confirmations, alerts, and decisions. Two variants:
 |-----------|------|---------|
 | `onDismissRequest` | `() -> Unit` | Called when dismissed (back press, outside tap) |
 | `onConfirmClick` | `() -> Unit` | Confirm button action |
-| `title` | `String?` | Dialog title |
-| `text` | `String?` | Body message |
-| `confirmButtonText` | `String` | Label for confirm button |
-| `dismissButtonText` | `String?` | Label for dismiss button (omit to hide) |
-| `icon` | `@Composable (() -> Unit)?` | Optional icon above title |
-| `modifier` | `Modifier` | Standard |
+| `title` | `String` | Dialog title (required) |
+| `text` | `String` | Body message (required) |
+| `confirmButtonText` | `String` | Label for confirm button (default `"OK"`) |
+| `dismissButtonText` | `String?` | Label for dismiss button (default `"Cancel"`; `null` hides it) |
+| `icon` | `(@Composable () -> Unit)?` | Optional icon above title |
+| `content` | `(@Composable () -> Unit)?` | Extra content below the text, e.g. an input field |
+| `shape`, `containerColor`, `iconContentColor`, `titleContentColor`, `textContentColor`, `elevation` | | Styling overrides |
+| `properties` | `DialogProperties` | Dismiss behavior |
+
+`AlertDialog` has no `modifier` parameter.
 
 ## Parameters — BasicAlertDialog
 
@@ -35,6 +39,7 @@ Modal dialog for confirmations, alerts, and decisions. Two variants:
 | `onDismissRequest` | `() -> Unit` | Called on dismiss |
 | `content` | `@Composable () -> Unit` | Fully custom dialog content |
 | `modifier` | `Modifier` | Standard |
+| `properties` | `DialogProperties` | Dismiss behavior |
 
 ## Example
 
@@ -154,4 +159,4 @@ fun AlertDialogSample() {
 
 ## Sample App Snippet (Multiplatform)
 
-> Same usage pattern as Android. Uses `com.nomanr.lumo.multiplatform.ui.components.*` imports.
+> Same usage pattern as Android. Uses `<PackageName>.components.*` imports.

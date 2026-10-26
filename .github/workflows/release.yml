@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      # Opens or updates a release PR that bumps every manifest version and CHANGELOG.md.
+      # Merging that PR tags vX.Y.Z and publishes the GitHub release.
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          persist-credentials: false
+
+      # One zip per skill, for manual install and for uploading to claude.ai.
+      - name: Upload skill archives
+        if: ${{ steps.release.outputs.release_created }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.release.outputs.tag_name }}
+        run: |
+          cd skills
+          for skill in */; do
+            skill="${skill%/}"
+            zip -qr "../${skill}.zip" "$skill"
+          done
+          cd ..
+          gh release upload "$TAG" ./*.zip --repo "$GITHUB_REPOSITORY"

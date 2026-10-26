@@ -1,0 +1,4 @@
+interface:
+  display_name: 'lumo-ui'
+  short_description: 'Set up lumo-ui and use its generated Jetpack Compose components'
+  default_prompt: '$lumo-ui: Set up lumo-ui in this project and add a Button'

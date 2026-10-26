@@ -69,6 +69,7 @@ Skills are self-contained folders that package instructions and resources for an
 | [gemini-extension.json](./gemini-extension.json) | Gemini CLI extension manifest |
 | [scripts/validate.mjs](./scripts/validate.mjs) | Checks skills against the spec and keeps manifest versions in sync |
 | [scripts/check-upstream.mjs](./scripts/check-upstream.mjs) | Checks the docs against lumo-ui's plugin templates |
+| [scripts/set-version.mjs](./scripts/set-version.mjs) | Sets the release version in every manifest and `SKILL.md` |
 | [skills/lumo-ui/evals/](./skills/lumo-ui/evals) | Test prompts and expected behaviour for the skill |
 | [AGENTS.md](./AGENTS.md) | Guidance for AI agents working on this repo (`CLAUDE.md` links to it) |
 

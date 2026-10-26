@@ -34,7 +34,7 @@ both checks on every pull request.
   `SupportedComponents.kt`.
 - Write deliberate wrong examples on lines marked `✗`; `check-upstream.mjs` skips them.
 - Keep `SKILL.md` under 500 lines. Put detail in `knowledge/` or `components/`.
-- Don't edit version numbers. release-please bumps them from Conventional Commit messages
-  (`fix:`, `feat:`). See `CONTRIBUTING.md`.
+- Don't edit version numbers. release-please bumps them from Conventional Commit PR titles
+  (`fix:`, `feat:`), or the Manual release workflow does. See `CONTRIBUTING.md`.
 - When documenting a new lumo-ui release, update `metadata.lumo-version` and fix whatever
   `check-upstream.mjs` reports against the new tag.

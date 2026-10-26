@@ -20,7 +20,6 @@ container and individual `NavigationBarItem` composables.
 | `modifier` | `Modifier` | Standard |
 | `containerColor` | `Color` | Bar background color |
 | `contentColor` | `Color` | Default icon/label color |
-| `tonalElevation` | `Dp` | Tonal elevation for Material3 color role |
 | `windowInsets` | `WindowInsets` | Handle nav bar insets (edge-to-edge) |
 | `content` | `@Composable RowScope.() -> Unit` | `NavigationBarItem` children |
 
@@ -35,6 +34,7 @@ container and individual `NavigationBarItem` composables.
 | `enabled` | `Boolean` | Enable/disable (default `true`) |
 | `alwaysShowLabel` | `Boolean` | Show label even when unselected (default `true`) |
 | `colors` | `NavigationBarItemColors` | Via `NavigationBarItemDefaults.colors()` |
+| `textStyle` | `TextStyle` | Label style (default `NavigationBarItemDefaults.textStyle()`) |
 | `modifier` | `Modifier` | Standard |
 
 ## Example
@@ -126,4 +126,4 @@ fun NavigationBarSample(navigateUp: (() -> Unit)?) {
 
 ## Sample App Snippet (Multiplatform)
 
-> Same usage pattern as Android. Uses `com.nomanr.lumo.multiplatform.ui.components.*` imports.
+> Same usage pattern as Android. Uses `<PackageName>.components.*` imports.

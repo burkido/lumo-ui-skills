@@ -5,32 +5,26 @@
 
 ## Description
 
-Extended `Text` composable that adds a `textRes` parameter for `@StringRes Int`
-support alongside the standard string overload. Pair with `AppTheme.typography`
-for consistent type scale.
-
-## Overloads
-
-| Overload | When to use |
-|----------|-------------|
-| `Text(text = "...")` | Literal or runtime string |
-| `Text(textRes = R.string.hello)` | String resource ID |
+Themed `Text` composable that takes a `String` and defaults its color and style to
+`LocalContentColor` and `LocalTextStyle`. Pair with `AppTheme.typography` for
+consistent type scale. There is no string-resource overload: pass
+`stringResource(R.string.x)` as `text`.
 
 ## Parameters
 
 | Parameter | Type | Purpose |
 |-----------|------|---------|
-| `text` | `String` | Text content (use this OR `textRes`) |
-| `textRes` | `Int` | `@StringRes` ID (use this OR `text`) |
+| `text` | `String` | Text content |
 | `modifier` | `Modifier` | Standard |
-| `color` | `Color` | Text color (default `Color.Unspecified` → inherits) |
+| `color` | `Color` | Text color (default `LocalContentColor.current`) |
 | `style` | `TextStyle` | Typography style — use `AppTheme.typography.*` |
-| `textAlign` | `TextAlign?` | Alignment |
+| `fontSize`, `fontStyle`, `fontWeight`, `fontFamily`, `letterSpacing`, `textDecoration`, `lineHeight` | | Per-call overrides of `style` |
+| `textAlign` | `TextAlign` | Alignment (default `TextAlign.Start`) |
 | `overflow` | `TextOverflow` | `Clip`, `Ellipsis`, `Visible` |
 | `softWrap` | `Boolean` | Wrap on soft line breaks |
 | `maxLines` | `Int` | Max lines before truncation |
 | `minLines` | `Int` | Min lines (expands to fill) |
-| `onTextLayout` | `((TextLayoutResult) -> Unit)?` | Layout callback |
+| `onTextLayout` | `(TextLayoutResult) -> Unit` | Layout callback |
 
 ## Example
 
@@ -52,7 +46,7 @@ Text(
 
 // From string resource
 Text(
-    textRes = R.string.app_name,
+    text = stringResource(R.string.app_name),
     style = AppTheme.typography.h1
 )
 
@@ -102,7 +96,7 @@ fun TextSample() {
 ## Sample App Snippet (Multiplatform)
 
 ```kotlin
-// Identical — uses com.nomanr.lumo.multiplatform.ui.LocalTypography
+// Identical — uses <PackageName>.LocalTypography
 @Composable
 fun TextSample() {
     val typography = LocalTypography.current

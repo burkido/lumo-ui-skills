@@ -145,7 +145,7 @@ Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 ## Sample App Snippet (Multiplatform)
 
 ```kotlin
-// Same pattern — uses com.nomanr.lumo.multiplatform.ui.components.* imports
+// Same pattern — uses <PackageName>.components.* imports
 // ExpandClickingHeader
 ElevatedCard {
     Accordion(headerContent = {

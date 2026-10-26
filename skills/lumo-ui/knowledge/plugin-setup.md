@@ -101,7 +101,7 @@ See `knowledge/theming.md` for what gets generated and how to use it.
 ./gradlew lumo --add Button
 ```
 
-This copies `Button.kt` (and any auto-resolved dependencies like `Surface.kt`) into
+This copies `Button.kt` (and auto-resolved dependencies like `Surface.kt` and `Text.kt`) into
 `ComponentsDir/components/`.
 
 ---
@@ -123,18 +123,20 @@ This copies `Button.kt` (and any auto-resolved dependencies like `Surface.kt`) i
 ```
 ui-components/
 ├── Theme.kt                    ← AppTheme composable
-├── Colors.kt                   ← LightColors, DarkColors
+├── Color.kt                    ← Colors, LightColors, DarkColors
 ├── Typography.kt               ← Typography scale
 ├── components/
 │   ├── Button.kt
-│   └── Surface.kt              ← auto-added (Button depends on Surface)
+│   ├── Surface.kt              ← auto-added (Button depends on Surface and Text)
+│   └── Text.kt                 ← auto-added
 └── foundation/
-    ├── ButtonElevation.kt
-    └── Ripple.kt
+    ├── ButtonElevation.kt      ← added with Button
+    ├── Elevation.kt            ← from --setup
+    └── Ripple.kt               ← from --setup
 ```
 
 ### Dependency auto-resolution
-Running `--add Button` automatically pulls in `Surface` (and any other transitive
+Running `--add Button` automatically pulls in `Surface` and `Text` (and any other transitive
 dependencies) without prompting. You'll see which extra files were added in the
 console output.
 
@@ -148,7 +150,7 @@ ui-components/
 ├── build.gradle.kts            ← plugin applied here (Option B)
 └── src/main/java/com/example/ui/
     ├── Theme.kt
-    ├── Colors.kt
+    ├── Color.kt
     ├── Typography.kt
     ├── components/
     │   └── *.kt                ← generated components

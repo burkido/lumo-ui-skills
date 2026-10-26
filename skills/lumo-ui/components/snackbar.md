@@ -150,4 +150,4 @@ data class SampleSnackbarMessage(val text: String, val actionLabel: String? = nu
 
 ## Sample App Snippet (Multiplatform)
 
-> Same usage pattern as Android. Uses `com.nomanr.lumo.multiplatform.ui.components.*` imports.
+> Same usage pattern as Android. Uses `<PackageName>.components.*` imports.

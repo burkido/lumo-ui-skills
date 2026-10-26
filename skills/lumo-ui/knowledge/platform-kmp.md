@@ -40,7 +40,7 @@ src/
 ├── commonMain/
 │   └── kotlin/com/example/ui/
 │       ├── Theme.kt
-│       ├── Colors.kt
+│       ├── Color.kt
 │       ├── Typography.kt
 │       └── components/
 │           ├── Button.kt          ← same on all platforms

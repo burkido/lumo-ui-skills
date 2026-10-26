@@ -152,4 +152,4 @@ fun TextFieldSample() {
 
 ## Sample App Snippet (Multiplatform)
 
-> Same usage pattern as Android. Uses `com.nomanr.lumo.multiplatform.ui.components.textfield.*` imports.
+> Same usage pattern as Android. Uses `<PackageName>.components.textfield.*` imports.

@@ -10,11 +10,10 @@ two-component pattern: `TooltipBox` wraps the anchor, `Tooltip` renders the popu
 
 ## KMP Notes
 
-Tooltip is the only lumo-ui component with platform-specific generated files:
-- `Tooltip.android.kt` — long-press triggered, `TooltipBox` with gesture handling
-- `Tooltip.ios.kt` — hover-triggered implementation
-
-Set `KotlinMultiplatform=true` in `lumo.properties` to get both files.
+Tooltip is the only lumo-ui component with platform-specific generated files. With
+`KotlinMultiplatform=true` in `lumo.properties`, `--add Tooltip` writes the shared
+`Tooltip.kt` plus one file per source set: `Tooltip.android.kt`, `Tooltip.ios.kt`,
+`Tooltip.macos.kt`, `Tooltip.desktop.kt` and `Tooltip.wasmJs.kt`.
 
 ## State
 
@@ -30,8 +29,8 @@ val tooltipState = rememberTooltipState(isPersistent = true)
 
 | Parameter | Type | Purpose |
 |-----------|------|---------|
-| `positionProvider` | `PopupPositionProvider` | Where the popup appears relative to anchor |
-| `tooltip` | `@Composable () -> Unit` | The `Tooltip` content composable |
+| `positionProvider` | `PopupPositionProvider` | Where the popup appears; default `rememberTooltipPositionProvider()` |
+| `tooltip` | `@Composable TooltipScope.() -> Unit` | The `Tooltip` content composable |
 | `state` | `TooltipState` | From `rememberTooltipState()` |
 | `modifier` | `Modifier` | Standard |
 | `focusable` | `Boolean` | Whether tooltip is focusable |
@@ -43,9 +42,11 @@ val tooltipState = rememberTooltipState(isPersistent = true)
 | Parameter | Type | Purpose |
 |-----------|------|---------|
 | `modifier` | `Modifier` | Standard |
+| `caretSize` | `DpSize` | Caret size; `DpSize.Unspecified` hides the caret |
+| `maxWidth` | `Dp` | Maximum bubble width |
 | `shape` | `Shape` | Tooltip bubble shape |
-| `containerColor` | `Color` | Tooltip background |
-| `contentColor` | `Color` | Text/icon color inside |
+| `containerColor` | `Color` | Tooltip background (default `AppTheme.colors.surface`) |
+| `shadowElevation` | `Dp` | Bubble shadow |
 | `content` | `@Composable () -> Unit` | Tooltip text/content |
 
 ## Example
@@ -54,7 +55,7 @@ val tooltipState = rememberTooltipState(isPersistent = true)
 val tooltipState = rememberTooltipState()
 
 TooltipBox(
-    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+    positionProvider = rememberTooltipPositionProvider(),
     tooltip = {
         Tooltip {
             Text("This is a tooltip")
@@ -81,7 +82,7 @@ fun TooltipSample() {
         // Basic tooltip — auto-dismisses
         Box(modifier = Modifier.padding(top = 100.dp)) {
             TooltipBox(
-                positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                positionProvider = rememberTooltipPositionProvider(),
                 tooltip = { Tooltip { Text("Auto-dismisses") } },
                 state = rememberTooltipState(),
             ) {
@@ -92,8 +93,8 @@ fun TooltipSample() {
         // Tooltip without caret
         Box(modifier = Modifier.padding(top = 100.dp)) {
             TooltipBox(
-                positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
-                tooltip = { Tooltip(caretProperties = null) { Text("No caret") } },
+                positionProvider = rememberTooltipPositionProvider(),
+                tooltip = { Tooltip(caretSize = DpSize.Unspecified) { Text("No caret") } },
                 state = rememberTooltipState(),
             ) {
                 Button(text = "No Caret Tooltip", variant = ButtonVariant.PrimaryOutlined, onClick = {})
@@ -103,7 +104,7 @@ fun TooltipSample() {
         // Persistent tooltip
         Box(modifier = Modifier.padding(top = 100.dp)) {
             TooltipBox(
-                positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                positionProvider = rememberTooltipPositionProvider(),
                 tooltip = { Tooltip { Text("Stays until tapped outside") } },
                 state = rememberTooltipState(isPersistent = true),
             ) {
@@ -116,7 +117,7 @@ fun TooltipSample() {
             val state = rememberTooltipState(isPersistent = true)
             val scope = rememberCoroutineScope()
             TooltipBox(
-                positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                positionProvider = rememberTooltipPositionProvider(),
                 tooltip = {
                     Tooltip {
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -140,14 +141,14 @@ fun TooltipSample() {
 ## Sample App Snippet (Multiplatform)
 
 ```kotlin
-// Same pattern — uses com.nomanr.lumo.multiplatform.ui.components.* imports
+// Same pattern — uses <PackageName>.components.* imports
 @Composable
 fun TooltipSample() {
     Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
 
         Box(modifier = Modifier.padding(top = 100.dp)) {
             TooltipBox(
-                positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                positionProvider = rememberTooltipPositionProvider(),
                 tooltip = { Tooltip { Text("Auto-dismisses") } },
                 state = rememberTooltipState(),
             ) {
@@ -159,7 +160,7 @@ fun TooltipSample() {
             val state = rememberTooltipState(isPersistent = true)
             val scope = rememberCoroutineScope()
             TooltipBox(
-                positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+                positionProvider = rememberTooltipPositionProvider(),
                 tooltip = {
                     Tooltip {
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {

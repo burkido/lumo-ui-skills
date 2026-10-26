@@ -37,7 +37,7 @@ val otpState = rememberOtpState(length = 4)  // 4-digit OTP (adjust as needed)
 | `isError` | `Boolean` | Show error styling (default `false`) |
 | `autoFocus` | `Boolean` | Auto-focus first cell on composition (default `true`) |
 | `visualTransformation` | `VisualTransformation` | E.g. `PasswordVisualTransformation()` to mask digits |
-| `colors` | `OTPTextFieldColors` | Via `OTPTextFieldDefaults.colors()` |
+| `colors` | `OTPTextFieldColors` | `OTPTextFieldDefaults.filledColors()`, `outlinedColors()` or `underlinedColors()` (default matches the variant) |
 
 ## Example
 
@@ -118,4 +118,4 @@ fun OTPTextFieldSample() {
 
 ## Sample App Snippet (Multiplatform)
 
-> Same usage pattern as Android. Uses `com.nomanr.lumo.multiplatform.ui.components.*` imports.
+> Same usage pattern as Android. Uses `<PackageName>.components.*` imports.

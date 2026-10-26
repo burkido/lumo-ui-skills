@@ -40,7 +40,7 @@ Switch(
             Icon(
                 imageVector = Icons.Default.Check,
                 contentDescription = null,
-                modifier = Modifier.size(SwitchDefaults.IconSize)
+                modifier = Modifier.size(SwitchDefaults.ThumbSize)
             )
         }
     } else null
@@ -125,4 +125,4 @@ fun SwitchSample() {
 
 ## Sample App Snippet (Multiplatform)
 
-> Same usage pattern as Android. Uses `com.nomanr.lumo.multiplatform.ui.components.*` imports.
+> Same usage pattern as Android. Uses `<PackageName>.components.*` imports.

@@ -5,9 +5,10 @@
 
 ## Description
 
-Screen-level app bar with title, navigation icon, and action icons. Supports
-scroll-aware behaviors (pinned, enter-always, exit-until-collapsed) via
-`TopBarScrollBehavior`. Goes in Scaffold's `topBar` slot.
+Screen-level app bar with a single `content` slot: lay out the navigation icon, title
+and actions yourself in a `Row`. Supports scroll-aware behaviors (pinned, enter-always,
+exit-until-collapsed) via `TopBarScrollBehavior`. Goes in Scaffold's `topBar` slot.
+Generated into the `components.topbar` package.
 
 ## Scroll behaviors
 
@@ -22,39 +23,35 @@ scroll-aware behaviors (pinned, enter-always, exit-until-collapsed) via
 
 | Parameter | Type | Purpose |
 |-----------|------|---------|
-| `title` | `@Composable () -> Unit` | Title slot |
 | `modifier` | `Modifier` | Standard |
-| `navigationIcon` | `@Composable () -> Unit` | Leading icon (back, menu) |
-| `actions` | `@Composable RowScope.() -> Unit` | Trailing action icons |
-| `scrollBehavior` | `TopBarScrollBehavior?` | Scroll-aware animation |
-| `colors` | `TopBarColors` | Via `TopBarDefaults.topBarColors()` |
-| `windowInsets` | `WindowInsets` | For edge-to-edge |
+| `scrollBehavior` | `TopBarScrollBehavior?` | Scroll-aware animation (default `null`) |
+| `colors` | `TopBarColors` | Via `TopBarDefaults.topBarColors()` or `TopBarColors(containerColor, scrolledContainerColor)` |
+| `windowInsets` | `WindowInsets?` | For edge-to-edge (default `TopBarDefaults.windowInsets`) |
+| `content` | `@Composable () -> Unit` | Bar content, centered in a full-width `Row` |
+
+There are no `title`, `navigationIcon` or `actions` parameters.
 
 ## Example
 
 ```kotlin
-// Pinned top bar
+// Pinned top bar: back button, title, action
 Scaffold(
     topBar = {
-        TopBar(
-            title = { Text("Home") },
-            navigationIcon = {
-                IconButton(
-                    variant = IconButtonVariant.SecondaryGhost,
-                    onClick = { navController.popBackStack() }
-                ) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+        TopBar {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                IconButton(variant = IconButtonVariant.Ghost, onClick = { navController.popBackStack() }) {
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                 }
-            },
-            actions = {
-                IconButton(
-                    variant = IconButtonVariant.SecondaryGhost,
-                    onClick = { /* search */ }
-                ) {
+                Text(text = "Home", style = AppTheme.typography.h3)
+                IconButton(variant = IconButtonVariant.Ghost, onClick = { /* search */ }) {
                     Icon(Icons.Default.Search, contentDescription = "Search")
                 }
             }
-        )
+        }
     }
 ) { padding -> /* content */ }
 ```
@@ -67,10 +64,9 @@ val scrollBehavior = TopBarDefaults.enterAlwaysScrollBehavior()
 
 Scaffold(
     topBar = {
-        TopBar(
-            title = { Text("Feed") },
-            scrollBehavior = scrollBehavior
-        )
+        TopBar(scrollBehavior = scrollBehavior) {
+            Text(text = "Feed", style = AppTheme.typography.h3)
+        }
     },
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
 ) { padding ->
@@ -165,7 +161,7 @@ fun TopBarSample(navigateUp: (() -> Unit)? = null) {
 
 ## Sample App Snippet (Multiplatform)
 
-> Same usage pattern as Android. Uses `com.nomanr.lumo.multiplatform.ui.components.topbar.*` imports.
+> Same usage pattern as Android. Uses `<PackageName>.components.topbar.*` imports.
 
 ## Important: nestedScroll
 

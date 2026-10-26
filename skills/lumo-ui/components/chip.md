@@ -26,9 +26,13 @@ Three surface styles. Often used in filter bars and tag lists.
 | `enabled` | `Boolean` | Enable/disable (default `true`) |
 | `leadingIcon` | `@Composable (() -> Unit)?` | Icon before label |
 | `trailingIcon` | `@Composable (() -> Unit)?` | Icon after label (e.g. remove ×) |
-| `colors` | `ChipColors` | Via `ChipDefaults.chipColors()` |
-| `border` | `BorderStroke?` | Stroke for outlined variant |
+| `shape` | `Shape` | Chip shape (default: rounded rectangle) |
+| `contentPadding` | `PaddingValues` | Via `ChipDefaults.contentPadding` |
 | `modifier` | `Modifier` | Standard |
+
+`ElevatedChip` and `OutlinedChip` take the same parameters. Colors and borders aren't
+parameters: each style reads them from `ChipDefaults` inside the generated `Chip.kt`, so
+edit that file to restyle chips.
 
 ## Example
 
@@ -110,4 +114,4 @@ FlowRow(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.sp
 
 ## Sample App Snippet (Multiplatform)
 
-> Same usage pattern as Android. Uses `com.nomanr.lumo.multiplatform.ui.components.*` imports.
+> Same usage pattern as Android. Uses `<PackageName>.components.*` imports.

@@ -102,7 +102,7 @@ No plugin re-run needed after customization.
 | Modal Bottom Sheet | `--add ModalBottomSheet` | `components/modal-bottom-sheet.md` |
 | Navigation Bar | `--add NavigationBar` | `components/navigation-bar.md` |
 | OTP Text Field | `--add OTPTextField` | `components/otp-text-field.md` |
-| Progress Indicators | `--add ProgressIndicator` | `components/progress-indicators.md` |
+| Progress Indicators | `--add ProgressIndicators` | `components/progress-indicators.md` |
 | Radio Button | `--add RadioButton` | `components/radio-button.md` |
 | Scaffold | `--add Scaffold` | `components/scaffold.md` |
 | Slider | `--add Slider` | `components/slider.md` |

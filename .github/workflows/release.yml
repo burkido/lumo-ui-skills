@@ -31,10 +31,5 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ steps.release.outputs.tag_name }}
         run: |
-          cd skills
-          for skill in */; do
-            skill="${skill%/}"
-            zip -qr "../${skill}.zip" "$skill"
-          done
-          cd ..
-          gh release upload "$TAG" ./*.zip --repo "$GITHUB_REPOSITORY"
+          ./scripts/package-skills.sh
+          gh release upload "$TAG" dist/*.zip --repo "$GITHUB_REPOSITORY"

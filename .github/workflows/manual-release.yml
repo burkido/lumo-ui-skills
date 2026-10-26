@@ -1,0 +1,72 @@
+name: Manual release
+
+# A release button for when release-please has nothing to release, e.g. because
+# commits were merged without a fix:/feat: prefix. Run it from the Actions tab.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release, without the v (e.g. 1.2.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+
+      - name: Check the version
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Version must look like 1.2.0, got '$VERSION'"
+            exit 1
+          fi
+          if git rev-parse -q --verify "refs/tags/v$VERSION" >/dev/null; then
+            echo "::error::Tag v$VERSION already exists"
+            exit 1
+          fi
+          current=$(node -p "require('./.release-please-manifest.json')['.']")
+          highest=$(printf '%s\n%s\n' "$current" "$VERSION" | sort -V | tail -1)
+          if [ "$VERSION" = "$current" ] || [ "$highest" != "$VERSION" ]; then
+            echo "::error::Version must be higher than the current $current"
+            exit 1
+          fi
+
+      # Bumping .release-please-manifest.json too keeps release-please's next release PR
+      # counting from this version.
+      - name: Bump versions, commit and tag
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          node scripts/set-version.mjs "$VERSION"
+          node scripts/validate.mjs
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "chore(main): release $VERSION"
+          git tag "v$VERSION"
+          git push origin main "v$VERSION"
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          ./scripts/package-skills.sh
+          gh release create "v$VERSION" dist/*.zip --repo "$GITHUB_REPOSITORY" --title "v$VERSION" --generate-notes --latest

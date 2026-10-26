@@ -84,11 +84,17 @@ To document a new release, update `metadata.lumo-version` in `SKILL.md`, then fi
 
 Releases are automated with [release-please](https://github.com/googleapis/release-please), so don't edit version numbers by hand.
 
-1. Write commit messages (or squash-merge PR titles) as [Conventional Commits](https://www.conventionalcommits.org): `fix:` releases a patch, `feat:` a minor version, and `feat!:` or a `BREAKING CHANGE:` footer a major version. `docs:` and `chore:` don't trigger a release.
+1. PRs are squash-merged, so the **PR title** becomes the commit message. Write it as a [Conventional Commit](https://www.conventionalcommits.org): `fix:` releases a patch, `feat:` a minor version, and `feat!:` a major version. `docs:`, `chore:`, `ci:` and `test:` don't trigger a release. The **PR title** check fails until the title has a valid type.
 2. On each push to `main`, release-please opens or updates a release PR that bumps the version in every manifest and in `SKILL.md`, and updates `CHANGELOG.md`.
 3. Merging the release PR tags `vX.Y.Z`, publishes the GitHub release, and attaches a zip of each skill.
 
 Agents only fetch a new copy when the version changes, so changes reach users when the release PR is merged.
+
+### Releasing by hand
+
+If something merged without a releasing type, or you want to choose the version yourself, use the release button: **Actions → Manual release → Run workflow**, and enter a version such as `1.2.0`. It must be higher than the current version. The workflow bumps every manifest and `SKILL.md` (with `scripts/set-version.mjs`), commits to `main`, tags `vX.Y.Z`, and publishes the release with generated notes and the skill zip. release-please continues from that version afterwards.
+
+Don't create tags or releases from the GitHub UI: they skip the version bump, so agents never see the update.
 
 ### Checklist
 

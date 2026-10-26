@@ -1,0 +1,92 @@
+{
+  "skill_name": "lumo-ui",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a single-module Android app using Jetpack Compose. Set up lumo-ui so I can start adding its components, and wire up the theme.",
+      "expected_output": "Applies the com.nomanr.plugin.lumo Gradle plugin, runs --init, configures lumo.properties, adds the required dependencies, runs --setup, and wraps the app in the generated theme.",
+      "files": [],
+      "expectations": [
+        "Applies the plugin with id(\"com.nomanr.plugin.lumo\") in a plugins block, not as an implementation dependency",
+        "Runs ./gradlew lumo --init and explains the ThemeName, ComponentsDir, PackageName and KotlinMultiplatform keys in lumo.properties",
+        "Uses ./gradlew lumo --required-deps to find the dependencies to add",
+        "Runs ./gradlew lumo --setup to generate Theme.kt, Color.kt and Typography.kt",
+        "Wraps setContent content in the generated theme composable (AppTheme by default)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "My lumo.properties has ThemeName=AcmeTheme and PackageName=com.acme.ui, and TopBar and IconButton are already generated. Add a top bar to my ProfileScreen with a back arrow, the title \"Profile\" and an overflow menu button.",
+      "expected_output": "A TopBar whose single content slot holds a Row with a back IconButton, a Text title and an overflow IconButton, using the user's theme and package names.",
+      "files": [],
+      "expectations": [
+        "Reads or refers to the generated TopBar.kt instead of assuming Material3's API",
+        "Passes the back button, title and overflow button inside TopBar's trailing content lambda, not as title, navigationIcon or actions parameters",
+        "Imports TopBar from com.acme.ui.components.topbar and IconButton from com.acme.ui.components",
+        "Uses AcmeTheme.typography or AcmeTheme.colors, not AppTheme or MaterialTheme",
+        "Uses a valid IconButtonVariant such as Ghost or PrimaryGhost"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Using lumo-ui, show a confirmation dialog before deleting an account, and make the delete button look destructive.",
+      "expected_output": "An AlertDialog with required title and text, onConfirmClick and onDismissRequest, triggered by a Button using ButtonVariant.Destructive.",
+      "files": [],
+      "expectations": [
+        "Uses lumo-ui's AlertDialog with onDismissRequest, onConfirmClick, title and text",
+        "Sets confirmButtonText and dismissButtonText (or relies on their \"OK\" and \"Cancel\" defaults)",
+        "Does not pass a modifier parameter to AlertDialog",
+        "Uses ButtonVariant.Destructive or another Destructive* variant, not DestructiveFilled",
+        "Does not import androidx.compose.material3.AlertDialog or material3.Button"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Add a lumo-ui progress indicator to my project and show an indeterminate spinner while a list loads.",
+      "expected_output": "Runs ./gradlew lumo --add ProgressIndicators and uses CircularProgressIndicator without a progress argument.",
+      "files": [],
+      "expectations": [
+        "Runs ./gradlew lumo --add ProgressIndicators (plural, exact case)",
+        "Uses CircularProgressIndicator() with no progress argument for the indeterminate state",
+        "Imports the indicator from the project's PackageName rather than material3"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "I generated Button with lumo-ui a while ago and tweaked it. Now I want all buttons to have fully rounded corners. What's the best way?",
+      "expected_output": "Edit the generated Button.kt directly; re-running --add won't overwrite an existing file.",
+      "files": [],
+      "expectations": [
+        "Recommends editing the generated Button.kt file directly",
+        "Does not recommend wrapping Button in a new composable just to change its shape",
+        "Notes that ./gradlew lumo --add Button skips files that already exist, so it won't overwrite the user's tweaks",
+        "Does not suggest deleting and regenerating Button.kt without warning that it discards the user's changes"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "I'm building a Kotlin Multiplatform app (Android, iOS, desktop) with lumo-ui. Add a tooltip that appears on an info icon, without the little caret.",
+      "expected_output": "Sets KotlinMultiplatform=true, runs --add Tooltip which writes Tooltip.kt plus per-platform files, and uses TooltipBox with Tooltip(caretSize = DpSize.Unspecified).",
+      "files": [],
+      "expectations": [
+        "Checks or sets KotlinMultiplatform=true in lumo.properties",
+        "Mentions that --add Tooltip generates platform-specific files such as Tooltip.android.kt and Tooltip.ios.kt",
+        "Wraps the anchor in TooltipBox and passes a Tooltip in the tooltip lambda",
+        "Hides the caret with caretSize = DpSize.Unspecified, not a caretProperties parameter",
+        "Uses rememberTooltipPositionProvider() or the default, not TooltipDefaults.rememberPlainTooltipPositionProvider()"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Change my lumo-ui app's brand colors to a teal primary and support dark mode that follows the system setting.",
+      "expected_output": "Edits LightColors and DarkColors in the generated Color.kt and uses AppTheme(isDarkTheme = isSystemInDarkTheme()) or its default.",
+      "files": [],
+      "expectations": [
+        "Edits the LightColors and DarkColors values in the generated Color.kt (not Colors.kt)",
+        "Uses the isDarkTheme parameter (or its isSystemInDarkTheme() default), not darkTheme",
+        "Does not introduce MaterialTheme, a Material3 colorScheme or *Container color roles",
+        "Updates the matching on* color (e.g. onPrimary) for contrast"
+      ]
+    }
+  ]
+}

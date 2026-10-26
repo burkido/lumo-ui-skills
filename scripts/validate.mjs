@@ -75,7 +75,6 @@ function validateSkill(skillDir) {
   const lineCount = text.split('\n').length;
   if (lineCount > MAX_SKILL_LINES) fail(`${rel(skillFile)}: ${lineCount} lines (keep under ${MAX_SKILL_LINES}; move detail into referenced files)`);
 
-  // Every relative markdown link in SKILL.md must resolve inside the skill folder.
   for (const [, target] of body.matchAll(/\]\(([^)#\s]+)(?:#[^)]*)?\)/g)) {
     if (/^[a-z]+:/i.test(target)) continue;
     if (!existsSync(join(skillDir, target))) fail(`${rel(skillFile)}: broken link to ${target}`);

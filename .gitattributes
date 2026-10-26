@@ -1,2 +1,1 @@
-# Count the skill's Markdown in GitHub's language stats (prose is excluded by default)
 *.md linguist-detectable

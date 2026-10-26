@@ -1,7 +1,5 @@
 name: Upstream drift
 
-# lumo-ui is maintained elsewhere, so check weekly that the skill still matches its
-# latest release and that the official docs links still resolve.
 on:
   schedule:
     - cron: '0 6 * * 1'
@@ -50,7 +48,6 @@ jobs:
           echo "drift=$([ -s "$report" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
           echo "report=$report" >> "$GITHUB_OUTPUT"
 
-      # One open issue collects the findings; later runs comment on it instead of opening more.
       - name: Report drift
         if: steps.check.outputs.drift == 'true'
         env:

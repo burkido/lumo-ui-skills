@@ -12,8 +12,6 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      # Opens or updates a release PR that bumps every manifest version and CHANGELOG.md.
-      # Merging that PR tags vX.Y.Z and publishes the GitHub release.
       - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         id: release
         with:
@@ -24,7 +22,6 @@ jobs:
         with:
           persist-credentials: false
 
-      # One zip per skill, for manual install and for uploading to claude.ai.
       - name: Upload skill archives
         if: ${{ steps.release.outputs.release_created }}
         env:

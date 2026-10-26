@@ -138,7 +138,6 @@ for (const file of walk(SKILLS_DIR).filter((f) => f.endsWith('.md') && !basename
     }
   }
 
-  // Named arguments in Kotlin examples, e.g. TopBar(title = ...).
   for (const [, block] of text.matchAll(/```kotlin\n([\s\S]*?)```/g)) {
     for (const call of block.matchAll(/(?<![\w.])([A-Z]\w*)\(/g)) {
       const known = functions.get(call[1]);

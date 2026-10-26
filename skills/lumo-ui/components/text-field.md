@@ -1,7 +1,7 @@
 # Text Field
 
 **CLI**: `./gradlew lumo --add TextField`  
-**Docs**: https://www.lumoui.com/text-field
+**Docs**: https://www.lumoui.com/textfield
 
 ## Description
 

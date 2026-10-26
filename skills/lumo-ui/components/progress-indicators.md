@@ -1,7 +1,7 @@
 # Progress Indicators
 
 **CLI**: `./gradlew lumo --add ProgressIndicators`  
-**Docs**: https://www.lumoui.com/progress-indicator
+**Docs**: https://www.lumoui.com/progress-indicators
 
 ## Description
 

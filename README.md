@@ -2,6 +2,8 @@
 
 A collection of AI agent skills for [lumo-ui](https://github.com/nomanr/lumo-ui), a Gradle plugin that generates Jetpack Compose UI components directly into Android and Kotlin Multiplatform projects. Skills follow the [Agent Skills](https://agentskills.io) standard, so the same `skills/` folder works in Claude Code, Codex, Cursor, Gemini CLI and any other agent that reads `SKILL.md`.
 
+The skill documents **lumo-ui 1.2.5** and is checked against that release's plugin templates in CI. It tells agents to read your generated component files first, since you may have edited them.
+
 **Official docs:** https://www.lumoui.com
 
 ## Installation
@@ -66,6 +68,9 @@ Skills are self-contained folders that package instructions and resources for an
 | [.cursor-plugin/](./.cursor-plugin) | Cursor plugin and marketplace manifests |
 | [gemini-extension.json](./gemini-extension.json) | Gemini CLI extension manifest |
 | [scripts/validate.mjs](./scripts/validate.mjs) | Checks skills against the spec and keeps manifest versions in sync |
+| [scripts/check-upstream.mjs](./scripts/check-upstream.mjs) | Checks the docs against lumo-ui's plugin templates |
+| [skills/lumo-ui/evals/](./skills/lumo-ui/evals) | Test prompts and expected behaviour for the skill |
+| [AGENTS.md](./AGENTS.md) | Guidance for AI agents working on this repo (`CLAUDE.md` links to it) |
 
 ## lumo-ui quick start
 

@@ -9,11 +9,13 @@ description: >
   generation, or any question about the 24 lumo-ui components (Button, TextField, Scaffold,
   NavigationBar, ModalBottomSheet, TopBar, Accordion, AlertDialog, Badge, Card, Checkbox,
   Chip, Divider, Icon, IconButton, OTPTextField, ProgressIndicator, RadioButton, Slider,
-  Snackbar, Surface, Switch, Text, Tooltip).
+  Snackbar, Surface, Switch, Text, Tooltip). Also applies in any project that has a
+  lumo.properties file or applies the com.nomanr.plugin.lumo Gradle plugin.
 license: MIT
 metadata:
   author: burkido
   version: "1.0.0" # x-release-please-version
+  lumo-version: "1.2.5"
 ---
 
 # lumo-ui Skill
@@ -29,12 +31,26 @@ Official docs: https://www.lumoui.com
 GitHub: https://github.com/nomanr/lumo-ui  
 Latest version: https://search.maven.org/artifact/com.nomanr/lumo
 
+This skill describes **lumo-ui 1.2.5**. If the project uses a newer plugin version, prefer
+the generated code and the official docs over the files in this skill.
+
 ---
 
 ## When this skill is active
 
-### Step 1 — Establish platform context first
-Ask "Is this an Android-only project or Kotlin Multiplatform?" if not already clear.
+### Step 0 — The generated code is the source of truth
+Read `lumo.properties` at the project root for `ComponentsDir`, `PackageName`,
+`ThemeName` and `KotlinMultiplatform`. Then, before writing code that uses a component,
+read its generated file (e.g. `<ComponentsDir>/components/Button.kt`). The user owns
+that file and may have changed it, so its signature beats anything in `components/*.md`.
+Use the docs in this skill when the component hasn't been generated yet.
+
+Import components from the user's `PackageName` (e.g. `com.example.ui.components.Button`),
+and use their `ThemeName` wherever this skill writes `AppTheme`.
+
+### Step 1 — Establish platform context
+Check `KotlinMultiplatform` in `lumo.properties`. If there is no `lumo.properties` yet,
+ask "Is this an Android-only project or Kotlin Multiplatform?" if not already clear.
 This determines:
 - Whether `KotlinMultiplatform=true` goes in `lumo.properties`
 - Whether generated components will have platform-split files (e.g. `Tooltip.android.kt`)
@@ -51,12 +67,50 @@ This determines:
 | Add a component they haven't generated yet | `components/<name>.md` → run the `--add` command |
 | Customize a component | Remind them: they own the generated code — edit it directly |
 
-### Step 3 — Component doc URL pattern
-Every component has an official docs page:
+### Step 3 — Official docs
+Every component file links its official page (`https://www.lumoui.com/<slug>`). Slugs
+don't always match component names: `/modal-bottomsheet`, `/otp-textfield`,
+`/textfield`, `/topbar`, `/progress-indicators`. General pages: `/setup`, `/cli`,
+`/kmp-support`.
+
+---
+
+## Common mistakes
+
+These come up repeatedly. Each shows what an agent tends to write and what lumo-ui needs.
+
+**lumo-ui is a plugin, not a dependency.**
+```kotlin
+implementation("com.nomanr:lumo:1.2.5")      // ✗ there is no runtime library
+id("com.nomanr.plugin.lumo") version "1.2.5"  // ✓ in plugins { }
 ```
-https://www.lumoui.com/<slug>
+
+**Use the generated components and theme, not Material3.**
+```kotlin
+import androidx.compose.material3.Button      // ✗
+MaterialTheme.colorScheme.primaryContainer    // ✗ no *Container colors in lumo-ui
+import com.example.ui.components.Button       // ✓ from the user's PackageName
+AppTheme.colors.primary                       // ✓
 ```
-Examples: `/button`, `/accordion`, `/modal-bottomsheet`, `/otp-textfield`, `/topbar`
+
+**lumo-ui APIs aren't Material3 APIs.** Don't carry over Material3 parameter names.
+```kotlin
+TopBar(title = { Text("Home") })              // ✗ TopBar has a single content slot
+TopBar { Text(text = "Home", style = AppTheme.typography.h3) }   // ✓
+ButtonVariant.PrimaryFilled                   // ✗
+ButtonVariant.Primary                         // ✓ filled is the unsuffixed name
+```
+
+**`--add` takes the exact component name and never overwrites.**
+```bash
+./gradlew lumo --add ProgressIndicator        # ✗ unknown component
+./gradlew lumo --add ProgressIndicators       # ✓ names are case-sensitive
+```
+If a generated file already exists, `--add` skips it. To regenerate a component, the
+user must delete the file first, which discards their edits, so confirm before suggesting it.
+
+**Customize by editing the generated file.** Don't wrap a component just to change its
+colors or shape: edit `Button.kt`, `Color.kt` or `Typography.kt` directly.
 
 ---
 

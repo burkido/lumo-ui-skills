@@ -1,0 +1,32 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "lumo-ui-skills",
+  "version": "1.0.0",
+  "description": "Set up lumo-ui, generate and customize its 24 Jetpack Compose components, and theme them with AppTheme on Android and Kotlin Multiplatform.",
+  "author": {
+    "name": "burkido",
+    "url": "https://github.com/burkido"
+  },
+  "homepage": "https://www.lumoui.com",
+  "repository": "https://github.com/burkido/lumo-ui-skills",
+  "license": "MIT",
+  "keywords": ["android", "jetpack-compose", "kotlin", "kmp", "compose", "lumo-ui"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "lumo-ui",
+        "shortDescription": "Jetpack Compose components with lumo-ui",
+        "longDescription": "Set up the lumo-ui Gradle plugin, generate its 24 Jetpack Compose components into Android and Kotlin Multiplatform projects, look up component APIs and variants, and theme them with AppTheme, Colors, and Typography.",
+        "developerName": "burkido",
+        "category": "Developer Tools",
+        "capabilities": ["Interactive", "Read", "Write"],
+        "websiteURL": "https://www.lumoui.com",
+        "defaultPrompt": [
+          "Set up lumo-ui in this Android project",
+          "Add a lumo-ui Button and TextField to this screen",
+          "Customize the lumo-ui theme colors and typography"
+        ]
+      }
+    }
+  }
+}

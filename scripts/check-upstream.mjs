@@ -3,7 +3,7 @@
 // docs can't name variants, parameters or components that the generated code doesn't have.
 // Usage: node scripts/check-upstream.mjs <path-to-lumo-ui-checkout>
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
-import { join, dirname, resolve } from 'node:path';
+import { join, dirname, resolve, basename } from 'node:path';
 
 const ROOT = resolve(dirname(new URL(import.meta.url).pathname), '..');
 const SKILLS_DIR = join(ROOT, 'skills');
@@ -118,7 +118,8 @@ const components = new Set(
 );
 
 const errors = new Set();
-for (const file of walk(SKILLS_DIR).filter((f) => f.endsWith('.md'))) {
+// Files starting with _ are contributor templates, not docs.
+for (const file of walk(SKILLS_DIR).filter((f) => f.endsWith('.md') && !basename(f).startsWith('_'))) {
   const where = file.slice(ROOT.length + 1);
   // Lines marked ✗ are deliberate counter-examples (see "Common mistakes" in SKILL.md).
   const text = readFileSync(file, 'utf8')

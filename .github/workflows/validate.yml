@@ -30,3 +30,10 @@ jobs:
 
       - name: Validate Claude Code marketplace and plugin
         run: npx --yes @anthropic-ai/claude-code@2.1.310 plugin validate --strict .
+
+      # Checks docs against the lumo-ui release named in SKILL.md's metadata.lumo-version.
+      - name: Check skill against lumo-ui templates
+        run: |
+          version=$(sed -n 's/^  lumo-version: "\(.*\)"/\1/p' skills/lumo-ui/SKILL.md)
+          git clone --quiet --depth 1 --branch "v$version" https://github.com/nomanr/lumo-ui.git "$RUNNER_TEMP/lumo-ui"
+          node scripts/check-upstream.mjs "$RUNNER_TEMP/lumo-ui"

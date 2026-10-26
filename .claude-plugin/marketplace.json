@@ -1,14 +1,21 @@
 {
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "lumo-ui-skills",
+  "description": "Agent skills for lumo-ui, the Gradle plugin that generates Jetpack Compose UI components for Android and Kotlin Multiplatform.",
   "owner": {
-    "name": "burkido"
+    "name": "burkido",
+    "url": "https://github.com/burkido"
   },
   "plugins": [
     {
       "name": "lumo-ui-skills",
-      "source": "./plugins/lumo-ui-skills",
-      "description": "AI agent skills for lumo-ui Jetpack Compose UI components.",
-      "version": "1.0.0"
+      "source": "./",
+      "description": "Set up lumo-ui, generate and customize its 24 Compose components, and theme them with AppTheme.",
+      "category": "development",
+      "homepage": "https://www.lumoui.com",
+      "repository": "https://github.com/burkido/lumo-ui-skills",
+      "license": "MIT",
+      "keywords": ["android", "jetpack-compose", "kotlin", "kmp", "compose", "lumo-ui"]
     }
   ]
 }

@@ -1,74 +1,75 @@
 # AI agent skills for lumo-ui
 
-A collection of AI agent skills for [lumo-ui](https://github.com/nomanr/lumo-ui) — a Gradle plugin that generates Jetpack Compose UI components directly into Android and Kotlin Multiplatform projects. Skills follow the [Agent Skills](https://agentskills.io) standard.
+A collection of AI agent skills for [lumo-ui](https://github.com/nomanr/lumo-ui), a Gradle plugin that generates Jetpack Compose UI components directly into Android and Kotlin Multiplatform projects. Skills follow the [Agent Skills](https://agentskills.io) standard, so the same `skills/` folder works in Claude Code, Codex, Cursor, Gemini CLI and any other agent that reads `SKILL.md`.
 
 **Official docs:** https://www.lumoui.com
 
-## How do skills work?
-
-Skills are self-contained folders that package instructions and resources for an AI agent to use on a specific task. Each folder includes a `SKILL.md` file with YAML frontmatter (name and description) followed by the guidance your coding agent follows while the skill is active.
-
-### Skill naming conventions
-
-All skills in this repository follow the naming convention: `lumo-<category>-<functional-name>`.
-
-`<category>` is one of the predefined categories listed in [CATEGORIES](./CATEGORIES):
-- `components` — skills for specific lumo-ui Compose components
-
-`<functional-name>` should be a short, descriptive name using kebab-case.
-
 ## Installation
-
-### Using the skills CLI
-
-```bash
-npx skills add burkido/lumo-ui-skills
-```
 
 ### Claude Code
 
 ```bash
 claude plugin marketplace add burkido/lumo-ui-skills
+claude plugin install lumo-ui-skills@lumo-ui-skills
 ```
+
+Or, inside a session: `/plugin install lumo-ui-skills --marketplace burkido/lumo-ui-skills`.
+
+To get new releases, run `claude plugin update lumo-ui-skills@lumo-ui-skills`, or turn on auto-update under **Marketplaces** in `/plugin`.
+
+### Codex
 
 ```bash
-claude plugin install lumo-ui-skills@burkido
+codex plugin marketplace add burkido/lumo-ui-skills
 ```
 
-### npx installer
+Then install **lumo-ui** from the plugin directory. Run `codex plugin marketplace upgrade` to pick up new releases.
+
+### Cursor
 
 ```bash
-npx lumo-ui-skill
+cursor-agent plugin marketplace add https://github.com/burkido/lumo-ui-skills
 ```
 
-Installs the skill into `.claude/skills/lumo-ui/` in your current project. Supports Claude Code, Cursor, and Windsurf:
+Then run `cursor-agent`, open `/plugin`, and install **lumo-ui** from the Marketplace tab. Teams can import this repository as a team marketplace from the Cursor dashboard instead.
+
+### Gemini CLI
 
 ```bash
-npx lumo-ui-skill --agent cursor    # Cursor
-npx lumo-ui-skill --agent windsurf  # Windsurf
-npx lumo-ui-skill --agent all       # all three
-npx lumo-ui-skill uninstall         # remove
+gemini extensions install https://github.com/burkido/lumo-ui-skills --auto-update
 ```
 
-### Manual installation
+Add `--ref v1.0.0` to pin a release.
 
-Copy the desired skill folder into the skills directory of your agent:
+### claude.ai and other agents
+
+Every [release](https://github.com/burkido/lumo-ui-skills/releases) attaches a `lumo-ui.zip`. Upload it to claude.ai under **Settings > Capabilities > Skills**, or unzip it into your agent's skills directory:
 
 ```bash
-cp -r skills/lumo-ui .claude/skills/
+# from a clone of this repository
+cp -r skills/lumo-ui .claude/skills/   # Claude Code, project scope
+cp -r skills/lumo-ui .agents/skills/   # Codex and other agents that read .agents/skills
 ```
+
+## How do skills work?
+
+Skills are self-contained folders that package instructions and resources for an AI agent to use on a specific task. Each folder includes a `SKILL.md` file with YAML frontmatter (name and description) followed by the guidance your coding agent follows while the skill is active. Agents load only the name and description up front and read the rest when a task needs it.
 
 ## Repository layout
 
 | Path | Contents |
 |------|----------|
-| [skills/](./skills) | All skill folders, one per skill |
-| [plugins/](./plugins) | Installable plugin packages |
-| [cli/](./cli) | `npx lumo-ui-skill` installer |
+| [skills/](./skills) | All skill folders, one per skill. The single source of truth every agent reads |
+| [.claude-plugin/](./.claude-plugin) | Claude Code plugin and marketplace manifests |
+| [plugin.json](./plugin.json) | [Agent Plugins](https://agent-plugins.org) manifest, read by Codex |
+| [.agents/plugins/](./.agents/plugins) | Codex marketplace |
+| [.cursor-plugin/](./.cursor-plugin) | Cursor plugin and marketplace manifests |
+| [gemini-extension.json](./gemini-extension.json) | Gemini CLI extension manifest |
+| [scripts/validate.mjs](./scripts/validate.mjs) | Checks skills against the spec and keeps manifest versions in sync |
 
 ## lumo-ui quick start
 
-lumo-ui is a **Gradle plugin**, not a runtime library — it copies ready-to-use Kotlin source into your project.
+lumo-ui is a **Gradle plugin**, not a runtime library: it copies ready-to-use Kotlin source into your project.
 
 ```bash
 # 1. Apply the plugin in root build.gradle.kts
@@ -91,4 +92,4 @@ Latest plugin version: https://search.maven.org/artifact/com.nomanr/lumo
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for details on adding new skills.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for adding skills and how releases work.

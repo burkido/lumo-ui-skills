@@ -38,9 +38,9 @@ function balanced(text, start) {
   return '';
 }
 
-// Top-level parameter names of a Kotlin parameter list, ignoring nested lambda types.
-function paramNames(list) {
-  const names = [];
+// Top-level [name, type] pairs of a Kotlin parameter list, ignoring nested lambda types.
+function params(list) {
+  const result = [];
   let depth = 0;
   let current = '';
   let prev = '';
@@ -50,13 +50,26 @@ function paramNames(list) {
     if (')}]'.includes(ch) || (ch === '>' && prev !== '-')) depth--;
     prev = ch;
     if (ch === ',' && depth === 0) {
-      const m = current.replace(/@\w+(\([^)]*\))?/g, '').match(/^\s*(?:vararg\s+)?(\w+)\s*:/);
-      if (m) names.push(m[1]);
+      const m = current.replace(/^\s*@\w+(\([^)]*\))?/, '').match(/^\s*(?:vararg\s+)?(\w+)\s*:([\s\S]*)$/);
+      if (m) result.push([m[1], withoutDefault(m[2])]);
       current = '';
     } else current += ch;
   }
-  return names;
+  return result;
 }
+
+function withoutDefault(type) {
+  let depth = 0;
+  for (let i = 0; i < type.length; i++) {
+    if ('(<{['.includes(type[i])) depth++;
+    else if (')}]'.includes(type[i]) || (type[i] === '>' && type[i - 1] !== '-')) depth--;
+    else if (type[i] === '=' && depth === 0) return type.slice(0, i).trim();
+  }
+  return type.trim();
+}
+
+// "@Composable (() -> Unit)?" and "(@Composable () -> Unit)?" are the same type.
+const normalizeType = (type) => type.replace(/@Composable|[\s()]/g, '');
 
 // Named arguments at the top level of a call's argument list: "a = 1, b = { x(c = 2) }" -> [a, b].
 function topLevelNamedArgs(args) {
@@ -75,7 +88,7 @@ function topLevelNamedArgs(args) {
   return names;
 }
 
-const functions = new Map(); // function name -> union of parameter names across overloads
+const functions = new Map(); // function name -> Map(parameter -> Map(normalized type -> type)), across overloads
 const enums = new Map(); // enum class name -> constants
 const defaults = new Map(); // XxxDefaults object -> members
 for (const file of walk(TEMPLATES)) {
@@ -85,8 +98,11 @@ for (const file of walk(TEMPLATES)) {
     defaults.set(m[1], new Set([...(defaults.get(m[1]) ?? []), ...members]));
   }
   for (const m of src.matchAll(/\bfun\s+(?:<[^>]*>\s*)?(?:[\w.]+\.)?(\w+)\s*\(/g)) {
-    const params = paramNames(balanced(src, m.index + m[0].length - 1));
-    functions.set(m[1], new Set([...(functions.get(m[1]) ?? []), ...params]));
+    const known = functions.get(m[1]) ?? new Map();
+    for (const [name, type] of params(balanced(src, m.index + m[0].length - 1))) {
+      known.set(name, (known.get(name) ?? new Map()).set(normalizeType(type), type.replace(/\s+/g, ' ')));
+    }
+    functions.set(m[1], known);
   }
   for (const m of src.matchAll(/\benum class (\w+)[^{]*\{/g)) {
     const body = balanced(src, m.index + m[0].length - 1).split(';')[0];
@@ -124,11 +140,11 @@ for (const file of walk(SKILLS_DIR).filter((f) => f.endsWith('.md'))) {
   // Named arguments in Kotlin examples, e.g. TopBar(title = ...).
   for (const [, block] of text.matchAll(/```kotlin\n([\s\S]*?)```/g)) {
     for (const call of block.matchAll(/(?<![\w.])([A-Z]\w*)\(/g)) {
-      const params = functions.get(call[1]);
-      if (!params) continue;
+      const known = functions.get(call[1]);
+      if (!known) continue;
       const args = balanced(block, call.index + call[0].length - 1);
       for (const name of topLevelNamedArgs(args)) {
-        if (!params.has(name)) errors.add(`${where}: example calls ${call[1]}(${name} = ...), which isn't a parameter`);
+        if (!known.has(name)) errors.add(`${where}: example calls ${call[1]}(${name} = ...), which isn't a parameter`);
       }
     }
   }
@@ -148,9 +164,13 @@ for (const file of walk(SKILLS_DIR).filter((f) => f.endsWith('.md'))) {
     }
     if (!line.startsWith('|')) inParams = false;
     else if (/^\|\s*Parameter\s*\|/.test(line)) inParams = true;
-    const row = line.match(/^\|\s*`(\w+)`\s*\|/);
-    if (inParams && row && fn && !functions.get(fn).has(row[1])) {
-      errors.add(`${where}: ${fn}() has no parameter "${row[1]}" (has: ${[...functions.get(fn)].join(', ')})`);
+    const row = line.match(/^\|\s*`(\w+)`\s*\|\s*(?:`([^`|]+)`\s*\|)?/);
+    const types = row && fn && functions.get(fn).get(row[1]);
+    if (inParams && types && row[2] && !types.has(normalizeType(row[2]))) {
+      errors.add(`${where}: ${fn}(${row[1]}) is documented as ${row[2]} but is ${[...types.values()].join(' or ')}`);
+    }
+    if (inParams && row && fn && !types) {
+      errors.add(`${where}: ${fn}() has no parameter "${row[1]}" (has: ${[...functions.get(fn).keys()].join(', ')})`);
     }
   }
 }
